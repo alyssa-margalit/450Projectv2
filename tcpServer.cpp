@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #include <fstream>
 using namespace std;
-#define TCPPORT 25556
+#define TCPPORT 25555
 
 bool auth = false;
 //buffer to send and receive messages with

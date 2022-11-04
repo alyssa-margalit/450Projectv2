@@ -10,7 +10,14 @@
 #include <sys/socket.h> 
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
-    
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+//------------------------------Set up UDP--------------------  
 #define PORTC     21555 
 #define PORTM      24555
 #define MAXLINE 1024
@@ -54,15 +61,57 @@ void startUDP(){
         exit(EXIT_FAILURE); 
     } 
 }
+//___________________________________________________________________
+vector<string> credentials1;
+vector<string> username;
+vector<string> password;
+int size;
+void getCredentials(){
+    ifstream in("cred.txt");
+    string temp;
+    while(getline(in,temp)){
+        if(temp.size()>0){
+            credentials1.push_back(temp);
+        }
+    }
+    for(size_t i = 0; i<credentials1.size();i++){
+        cout<<credentials1.at(i)<<endl;
+    }
+}
+void splitCredentials(){
+    for(size_t i = 0; i<credentials1.size();i++){
+        vector<string> split;
+        string temp = credentials1.at(i);
+        // cout<<"temp: "<<temp<<endl;
+        stringstream x(temp);
+        while(x.good()){
+            string y;
+            getline(x,y,',');
+            split.push_back(y);
+        }
+        // cout<<"username"<<i<<": "<<split.at(0)<<endl;
+        // cout<<"password"<<i<<": "<<split.at(1)<<endl;
+        username.push_back(split.at(0));
+        password.push_back(split.at(1));
+    }
+}
 
 // Driver code 
 int main() { 
-    startUDP();      
+    getCredentials();
+    splitCredentials();
+    startUDP();
+      
     int n; 
     socklen_t len;
     
     len = sizeof(serverMaddr);  //len is value/result 
-    
+    while(1){
+        memset(&serverMaddr, 0, sizeof(serverMaddr));
+        n = recvfrom(sockfd, (char *)buffer, MAXLINE,  
+            MSG_WAITALL, ( struct sockaddr *) &serverMaddr, 
+            &len);   
+    }
     n = recvfrom(sockfd, (char *)buffer, MAXLINE,  
                 MSG_WAITALL, ( struct sockaddr *) &serverMaddr, 
                 &len); 

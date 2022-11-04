@@ -30,7 +30,7 @@
 #include <cstring>
 #include <bits/stdc++.h>
 
-#define PORT 25556
+#define PORT 25555
 using namespace std;
 
 int debug = 1;
